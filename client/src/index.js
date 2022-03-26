@@ -1,7 +1,11 @@
 const web3 = require("@solana/web3.js");
 const borsh = require("borsh");
+const fs = require("fs");
 
-const programPubKey = new web3.PublicKey("2m83AA3biUMc1C8vyHf54MfXS7Npav2wDqvzEaJ9y72h");
+let payerArray = Uint8Array.from([50, 226, 171, 241, 186, 117, 161, 168, 246, 134, 107, 157, 85, 216, 141, 11, 62, 216, 67, 186, 194, 169, 154, 216, 221, 178, 83, 48, 187, 227, 116, 52, 32, 30, 209, 137, 82, 65, 65, 1, 170, 197, 248, 31, 178, 86, 9, 15, 155, 97, 230, 189, 51, 169, 113, 179, 231, 73, 19, 200, 175, 171, 217, 225]);
+const payer = web3.Keypair.fromSecretKey(payerArray);
+
+const programPubKey = new web3.PublicKey("2m83AA3biUMc1C8vyHf54MfXS7Npav2wDqvzEaJ9y72h"); // Replace with your own public program id key.
 const GREETING_SEED = "hello";
 
 class GreetingAccount {
@@ -36,9 +40,7 @@ async function createAccountWithLamports(lamports = 1000000, ) {
 
 async function createPayer() {
     // Use placeholder payer:
-    let accArray = Uint8Array.from([50, 226, 171, 241, 186, 117, 161, 168, 246, 134, 107, 157, 85, 216, 141, 11, 62, 216, 67, 186, 194, 169, 154, 216, 221, 178, 83, 48, 187, 227, 116, 52, 32, 30, 209, 137, 82, 65, 65, 1, 170, 197, 248, 31, 178, 86, 9, 15, 155, 97, 230, 189, 51, 169, 113, 179, 231, 73, 19, 200, 175, 171, 217, 225]);
-
-    return web3.Keypair.fromSecretKey(accArray);
+    return payer;
 
     // Determine fees
     // let fees = 0;
@@ -119,7 +121,6 @@ async function main() {
     await sayHello(payerAccount, greetPubKey);
 
     await getHelloCount(greetPubKey);
-
 }
 
 main().then(
